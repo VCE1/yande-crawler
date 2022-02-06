@@ -16,13 +16,15 @@ class SampleTest {
                     if (saveFile.exists()) {
                         println("[${it.id}] - ${saveFile.absolutePath}已经存在")
                         return@forEachIndexed
+                    }                    
+                    if(it.originalUrl.isNotEmpty()) {
+                        println("[${it.id}] - 开始下载第${1 + index}帐图片(${it.resolution}):${it.originalUrl}")
+                        if (!saveFile.parentFile.exists()) {
+                            saveFile.parentFile.mkdirs()
+                        }
+                        val bytes = YandeAPI.download(it.originalUrl)
+                        saveFile.writeBytes(bytes)
                     }
-                    println("[${it.id}] - 开始下载第${1 + index}帐图片(${it.resolution}):${it.originalUrl}")
-                    if (!saveFile.parentFile.exists()) {
-                        saveFile.parentFile.mkdirs()
-                    }
-                    val bytes = YandeAPI.download(it.originalUrl)
-                    saveFile.writeBytes(bytes)
                 }
             }
         }
